@@ -86,8 +86,10 @@ public class DuplicateDeviceDetail {
     @Column(name="success_count")
     String successCount;
 
-
     @Column(name = "fail_count")
     String failCount;
+
+    @Column(name = "actual_imei")
+    String actualImei;
 }
 

@@ -46,9 +46,6 @@ public class DuplicateDeviceDetailHis {
     @Column(name="status")
     String status;
 
-    @Column(name="remarks")
-    String remarks;
-
     @Column(name="updated_by")
     String updateBy;
 
@@ -91,5 +88,14 @@ public class DuplicateDeviceDetailHis {
 
     @Column(name = "operation")
     int operation;
+
+    @Column(name = "action")
+    String action;
+
+    @Column(name = "action_remark")
+    String actionRemark;
+
+    @Column(name = "actual_imei")
+    String actualImei;
 }
 

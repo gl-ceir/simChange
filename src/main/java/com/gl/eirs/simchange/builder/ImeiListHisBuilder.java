@@ -11,7 +11,7 @@ import static com.gl.eirs.simchange.constants.Constants.remarks;
 @Builder
 public class ImeiListHisBuilder {
 
-    public ImeiListHis forInsert(ImeiList imeiList, int operation) {
+    public ImeiListHis forInsert(ImeiList imeiList, int operation, String action) {
         ImeiListHis imeiListHis = new ImeiListHis();
         imeiListHis.setImei(imeiList.getImei());
         imeiListHis.setImsi(imeiList.getImsi());
@@ -26,7 +26,9 @@ public class ImeiListHisBuilder {
         imeiListHis.setAllowedDays(imeiList.getAllowedDays());
         imeiListHis.setExpiryDate(imeiList.getExpiryDate());
         imeiListHis.setPairMode(imeiList.getPairMode());
-        imeiListHis.setRemarks(remarks);
+        imeiListHis.setAction(action);
+        imeiListHis.setActualImei(imeiList.getActualImei());
+        imeiListHis.setActionRemark(remarks);
         return imeiListHis;
     }
 }

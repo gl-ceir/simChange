@@ -1,26 +1,25 @@
 package com.gl.eirs.simchange.builder;
 
 import com.gl.eirs.simchange.entity.app.ActiveMsisdnList;
+import lombok.Builder;
+import org.springframework.stereotype.Component;
 
+import static com.gl.eirs.simchange.constants.Constants.remarks;
+
+@Component
+@Builder
 public class ActiveMsisdnListBuilder {
 
-    private String msisdn;
-    private String imsi;
+    public ActiveMsisdnList forInsert(ActiveMsisdnList activeMsisdnList, String newImsi) {
+ActiveMsisdnList activeMsisdnList1 = new ActiveMsisdnList();
+activeMsisdnList1.setImsi(newImsi);
+activeMsisdnList1.setMsisdn(activeMsisdnList.getMsisdn());
+activeMsisdnList1.setCreatedOn(activeMsisdnList.getCreatedOn());
+activeMsisdnList1.setModifiedOn(activeMsisdnList.getModifiedOn());
+activeMsisdnList1.setRemarks(remarks);
+activeMsisdnList1.setOperator(activeMsisdnList.getOperator());
+activeMsisdnList1.setActivationDate(activeMsisdnList.getActivationDate());
+return activeMsisdnList1;
 
-    public ActiveMsisdnListBuilder setMsisdn(String msisdn) {
-        this.msisdn = msisdn;
-        return this;
-    }
-
-    public ActiveMsisdnListBuilder setImsi(String imsi) {
-        this.imsi = imsi;
-        return this;
-    }
-
-    public ActiveMsisdnList build() {
-        ActiveMsisdnList activeMsisdnList = new ActiveMsisdnList();
-        activeMsisdnList.setMsisdn(msisdn);
-        activeMsisdnList.setImsi(imsi);
-        return activeMsisdnList;
     }
 }

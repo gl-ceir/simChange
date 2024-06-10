@@ -37,6 +37,7 @@ public class DuplicateDeviceDetailBuilder {
         duplicateDeviceDetail1.setReminderStatus(duplicateDeviceDetail.getReminderStatus());
         duplicateDeviceDetail1.setSuccessCount(duplicateDeviceDetail.getSuccessCount());
         duplicateDeviceDetail1.setFailCount(duplicateDeviceDetail.getFailCount());
+        duplicateDeviceDetail1.setActualImei(duplicateDeviceDetail.getActualImei());
         return duplicateDeviceDetail1;
     }
 }

@@ -55,4 +55,6 @@ public class ImeiList {
     @Column(name="remarks")
     String remarks;
 
+    @Column(name = "actual_imei")
+    String actualImei;
 }

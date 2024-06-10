@@ -25,6 +25,7 @@ public class ImeiListBuilder {
         imeiList1.setAllowedDays(imeiList.getAllowedDays());
         imeiList1.setExpiryDate(imeiList.getExpiryDate());
         imeiList1.setPairMode(imeiList.getPairMode());
+        imeiList1.setActualImei(imeiList.getActualImei());
         imeiList1.setRemarks(remarks);
         return imeiList1;
     }

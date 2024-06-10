@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "active_msisdn_list_his")
 public class ActiveMsisdnListHis {
@@ -43,84 +44,5 @@ public class ActiveMsisdnListHis {
     private Date deactivationDate = new Date(); // Initialize with current date
 
 
-    public ActiveMsisdnListHis() {
-        // Default constructor
-    }
 
-    public ActiveMsisdnListHis(ActiveMsisdnList activeMsisdnList) {
-        this.msisdn = activeMsisdnList.getMsisdn();
-        this.imsi = activeMsisdnList.getImsi();
-        this.createdOn = new Timestamp(System.currentTimeMillis());
-        this.modifiedOn = new Timestamp(System.currentTimeMillis());
-    }
-
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Timestamp getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Timestamp createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public Timestamp getModifiedOn() {
-        return modifiedOn;
-    }
-
-    public void setModifiedOn(Timestamp modifiedOn) {
-        this.modifiedOn = modifiedOn;
-    }
-
-    public String getMsisdn() {
-        return msisdn;
-    }
-
-    public void setMsisdn(String msisdn) {
-        this.msisdn = msisdn;
-    }
-
-    public String getImsi() {
-        return imsi;
-    }
-
-    public void setImsi(String imsi) {
-        this.imsi = imsi;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public int getOperation() {
-        return operation;
-    }
-
-    public void setOperation(int operation) {
-        this.operation = operation;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public void setDeactivationDate(Date deactivationDate) {
-        this.deactivationDate = deactivationDate;
-    }
 }

@@ -10,7 +10,7 @@ import static com.gl.eirs.simchange.constants.Constants.remarks;
 @Component
 @Builder
 public class DuplicateDeviceDetailHisBuilder {
-    public DuplicateDeviceDetailHis forInsert(DuplicateDeviceDetail duplicateDeviceDetail ,int operation) {
+    public DuplicateDeviceDetailHis forInsert(DuplicateDeviceDetail duplicateDeviceDetail ,int operation, String action) {
         DuplicateDeviceDetailHis duplicateDeviceDetailHis = new DuplicateDeviceDetailHis();
         duplicateDeviceDetailHis.setImsi(duplicateDeviceDetail.getImsi());
         duplicateDeviceDetailHis.setId(duplicateDeviceDetail.getId());
@@ -21,7 +21,6 @@ public class DuplicateDeviceDetailHisBuilder {
         duplicateDeviceDetailHis.setFileName(duplicateDeviceDetail.getFileName());
         duplicateDeviceDetailHis.setEdrTime(duplicateDeviceDetail.getEdrTime());
         duplicateDeviceDetailHis.setStatus(duplicateDeviceDetail.getStatus());
-        duplicateDeviceDetailHis.setRemarks(remarks);
         duplicateDeviceDetailHis.setOperator(duplicateDeviceDetail.getOperator());
         duplicateDeviceDetailHis.setExpiryDate(duplicateDeviceDetail.getExpiryDate());
         duplicateDeviceDetailHis.setUpdateBy(duplicateDeviceDetail.getUpdateBy());
@@ -37,6 +36,9 @@ public class DuplicateDeviceDetailHisBuilder {
         duplicateDeviceDetailHis.setReminderStatus(duplicateDeviceDetail.getReminderStatus());
         duplicateDeviceDetailHis.setSuccessCount(duplicateDeviceDetail.getSuccessCount());
         duplicateDeviceDetailHis.setFailCount(duplicateDeviceDetail.getFailCount());
+        duplicateDeviceDetailHis.setActualImei(duplicateDeviceDetail.getActualImei());
+        duplicateDeviceDetailHis.setAction(action);
+        duplicateDeviceDetailHis.setActionRemark(remarks);
         duplicateDeviceDetailHis.setOperation(operation);
         return duplicateDeviceDetailHis;
     }

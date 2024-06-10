@@ -7,8 +7,14 @@ import com.gl.eirs.simchange.entity.app.*;
 import com.gl.eirs.simchange.repository.app.*;
 import com.gl.eirs.simchange.service.intf.IDbTransactions;
 import jakarta.transaction.Transactional;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 @Service
 public class DbTransactionsService implements IDbTransactions {
@@ -55,6 +61,17 @@ public class DbTransactionsService implements IDbTransactions {
     @Autowired
     private DuplicateDeviceDetailBuilder duplicateDeviceDetailBuilder;
 
+    @Autowired
+    private ActiveMsisdnListRepository activeMsisdnListRepository;
+
+    @Autowired
+    private ActiveMsisdnListHisRepository activeMsisdnListHisRepository;
+
+    @Autowired
+    private ActiveMsisdnListBuilder activeMsisdnListBuilder;
+    @Autowired
+    private ActiveMsisdnListHisBuilder activeMsisdnListHisBuilder;
+
 
     @Override
     @Transactional
@@ -83,7 +100,6 @@ public class DbTransactionsService implements IDbTransactions {
 
         return true;
     }
-
 
 
     @Override
@@ -139,6 +155,7 @@ public class DbTransactionsService implements IDbTransactions {
         }
         return true;
     }
+
     @Override
     @Transactional
     public boolean dbTransaction(ImeiList imeiList, String newImsi) {
@@ -147,7 +164,7 @@ public class DbTransactionsService implements IDbTransactions {
             // delete old record
             imeiListRepository.deleteById(Math.toIntExact(imeiList.getId()));
             // insert in history table
-            ImeiListHis imeiListHis = imeiListHisBuilder.forInsert(imeiList, 0);
+            ImeiListHis imeiListHis = imeiListHisBuilder.forInsert(imeiList, 0, "delete");
             imeiListHisRepository.save(imeiListHis);
 
             // insert new record in imei list
@@ -155,7 +172,7 @@ public class DbTransactionsService implements IDbTransactions {
             imeiListRepository.save(imeiList1);
 
             // insert in history table
-            imeiListHis = imeiListHisBuilder.forInsert(imeiList1, 1);
+            imeiListHis = imeiListHisBuilder.forInsert(imeiList1, 1, "add");
             imeiListHisRepository.save(imeiListHis);
 
         } catch (Exception e) {
@@ -174,7 +191,7 @@ public class DbTransactionsService implements IDbTransactions {
             // delete old record
             duplicateDeviceDetailRepository.deleteById(Math.toIntExact(duplicateDeviceDetail.getId()));
             // insert in his table
-            DuplicateDeviceDetailHis duplicateDeviceDetailHis = duplicateDeviceDetailHisBuilder.forInsert(duplicateDeviceDetail, 0);
+            DuplicateDeviceDetailHis duplicateDeviceDetailHis = duplicateDeviceDetailHisBuilder.forInsert(duplicateDeviceDetail, 0, "delete");
             duplicateDeviceDetailHisRepository.save(duplicateDeviceDetailHis);
 
             // insert new record in exception list
@@ -182,7 +199,7 @@ public class DbTransactionsService implements IDbTransactions {
             duplicateDeviceDetailRepository.save(duplicateDeviceDetail1);
 
             // insert in history table
-            duplicateDeviceDetailHis = duplicateDeviceDetailHisBuilder.forInsert(duplicateDeviceDetail1, 1);
+            duplicateDeviceDetailHis = duplicateDeviceDetailHisBuilder.forInsert(duplicateDeviceDetail1, 1, "add");
             duplicateDeviceDetailHisRepository.save(duplicateDeviceDetailHis);
 
         } catch (Exception e) {
@@ -193,7 +210,34 @@ public class DbTransactionsService implements IDbTransactions {
         return true;
     }
 
+    @Override
+    @Transactional
+    public boolean dbTransaction(String oldImsi, String newImsi) {
+        try {
+            // Check if the entry with oldImsi exists
+            ActiveMsisdnList activeMsisdnListEntry =  activeMsisdnListRepository.findByImsi(oldImsi);
 
+            if (activeMsisdnListEntry != null) {
+                // Update IMSI with the new value
+                activeMsisdnListEntry.setImsi(newImsi);
 
+                // Save the updated entry in active_msisdn_list
+                activeMsisdnListRepository.save(activeMsisdnListEntry);
 
+                // Create a history entry
+                ActiveMsisdnListHis activeMsisdnListHis = activeMsisdnListHisBuilder
+                        .forInsert(activeMsisdnListEntry, oldImsi);
+
+                // Insert the history entry into active_msisdn_list_his
+                activeMsisdnListHisRepository.save(activeMsisdnListHis);
+
+                // Transaction successful
+                return true;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

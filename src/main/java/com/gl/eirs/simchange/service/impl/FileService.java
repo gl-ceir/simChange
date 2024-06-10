@@ -77,6 +77,7 @@ public class FileService implements IFileService {
     @Autowired
     private DuplicateDeviceDetailHisRepository duplicateDeviceDetailHisRepository;
 
+
     //    @Override
     public ArrayList<FileDto> getFiles(String folderPath) {
 
@@ -144,9 +145,19 @@ public class FileService implements IFileService {
         int exceptionListSuccessCount = 0;
         int imeiListSuccessCount = 0;
         int duplicateDeviceDetailSucessCount =0;
+        // Get the input file name
+        String inputFileName = file.getFileName();
+
+        // Use Path to handle file name and extension
+        Path inputPath = Paths.get(inputFileName);
+        String baseFileName = inputPath.getFileName().toString().replaceFirst("[.][^.]+$", "");
+
+        // Create the processed file name dynamically
+        String processedFileName = baseFileName + "_write_processed.txt";
+
+        // Construct the full file path
         String filePath = appConfig.getProcessedFile();
-        String processedFileName = "b_processed.txt";
-        filePath = filePath+"/"+processedFileName;
+        filePath = filePath + "/" + processedFileName;
         IMSI_RETRIEVER imsiRetriever = new IMSI_RETRIEVER();
         try (BufferedReader reader = new BufferedReader(new FileReader(file.getFileName()));
              BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -236,7 +247,6 @@ public class FileService implements IFileService {
                     file.setExceptionListSuccess(exceptionListSuccessCount);
 
                     List<ImeiList> imeiList = imeiListRepository.findAllByImsi(oldImsi);
-                    logger.info("Found {} entries with IMSI: {}", imeiList.size(), oldImsi);
                     file.setImeiListFound(file.getImeiListFound() + imeiList.size());
                     if (!imeiList.isEmpty()) {
                         for (ImeiList list : imeiList) {
@@ -271,54 +281,25 @@ public class FileService implements IFileService {
                         }
                     }
                     file.setDuplicateDeviceDetailSuccess(duplicateDeviceDetailSucessCount);
-
-                    // Process Active Msisdn List
-                    ActiveMsisdnList activeMsisdnEntryToDelete = null;
-                    List<ActiveMsisdnList> activeMsisdnList = activeMsisdnListRepository.findAllByImsi(oldImsi);
-
-                    if (!activeMsisdnList.isEmpty()) {
-                        for (ActiveMsisdnList list : activeMsisdnList) {
-                            if (list.getImsi().equals(oldImsi) && list.getMsisdn().equals(msisdn)) {
-                                activeMsisdnEntryToDelete = list;
-                                break;
-                            }
-                        }
-                        if (activeMsisdnEntryToDelete != null) {
-                            logger.info("The IMSI matched in active msisdn list : {}", activeMsisdnEntryToDelete.toString());
-
-                            // Check if the same event already exists in history
-                            ActiveMsisdnListHis existingEntry = null;
-                            int count = activeMsisdnListHisRepository.countByImsiAndMsisdnAndRemarks(oldImsi, msisdn, "Sim Change");
-                            if (count == 0) {
-                                ActiveMsisdnListHis activeMsisdnListHis = new ActiveMsisdnListHis(activeMsisdnEntryToDelete);
-                                activeMsisdnListHis.setRemarks("Sim Change");
-                                activeMsisdnListHisRepository.save(activeMsisdnListHis);
-                                logger.info("Entry added to active msisdn list history: {}", activeMsisdnListHis.toString());
-                            }
-
-                            activeMsisdnListRepository.delete(activeMsisdnEntryToDelete);
-                            logger.info("Deleted entry from active msisdn list: {}", activeMsisdnEntryToDelete.toString());
-                        } else {
-                            logger.info("No entry found with IMSI: {} and MSISDN: {} in active msisdn list.", oldImsi, msisdn);
-                            // Log the absence of old IMSI here
-                            ActiveMsisdnListHis noOldImsiEntry = new ActiveMsisdnListHis();
-                            noOldImsiEntry.setImsi(oldImsi);
-                            noOldImsiEntry.setMsisdn(msisdn);
-                            noOldImsiEntry.setRemarks("No Old IMSI Found");
-                            activeMsisdnListHisRepository.save(noOldImsiEntry);
-                        }
-                    }
-
-                    if (activeMsisdnEntryToDelete != null) {
-                        ActiveMsisdnList newEntry = new ActiveMsisdnList(newImsi, msisdn);
-                        activeMsisdnListRepository.save(newEntry);
-                        logger.info("New entry added to active msisdn list: {}", newEntry.toString());
-                    }
-
-
-
                     writer.write(String.join(appConfig.getFileSeparator(), splitRecord) + appConfig.getFileSeparator() + status);
                     writer.newLine();
+                    // Process Active Msisdn List using ActiveMsisdnListBuilder
+                    ActiveMsisdnList activeMsisdnList = activeMsisdnListRepository.findByImsi(oldImsi);
+
+                    if (activeMsisdnList == null) {
+                        logger.info("No entry found in ActiveMsisdnList for IMSI: {}", oldImsi);
+                        continue; // Move to the next record
+                    }
+
+                    // Process Active Msisdn List using the found entry and newImsi
+                    boolean transactionSuccess = dbTransactionsService.dbTransaction(oldImsi, newImsi);
+                    if (!transactionSuccess) {
+                        failureMsg = FailureMsg.FailureMsgBuilder("Error processing Active Msisdn List");
+                        return failureMsg;
+                    }
+
+
+
                 } catch (Exception e) {
                     logger.error(e.toString());
                     failureMsg = FailureMsg.FailureMsgBuilder(e.getLocalizedMessage());

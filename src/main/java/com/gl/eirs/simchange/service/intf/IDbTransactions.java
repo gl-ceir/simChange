@@ -10,7 +10,7 @@ public interface IDbTransactions {
     public boolean dbTransaction(ExceptionList exceptionList, String newImsi);
     public boolean dbTransaction(ImeiList imeiList, String newImsi);
     public boolean dbTransaction(DuplicateDeviceDetail duplicateDeviceDetail, String newImsi);
-
+    public boolean dbTransaction(String oldImsi, String newImsi);
 
 
 }

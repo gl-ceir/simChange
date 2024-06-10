@@ -52,10 +52,16 @@ public class ImeiListHis {
     @Column(name="pair_mode")
     String pairMode;
 
-    @Column(name="remarks")
-    String remarks;
-
     @Column(name="operation")
     int operation;
+
+    @Column(name = "action")
+    String action;
+
+    @Column(name = "action_remark")
+    String actionRemark;
+
+    @Column(name = "actual_imei")
+    String actualImei;
 
 }
