@@ -17,7 +17,6 @@ public class ImeiListHisBuilder {
         imeiListHis.setImsi(imeiList.getImsi());
         imeiListHis.setMsisdn(imeiList.getMsisdn());
         imeiListHis.setFileName(imeiList.getFileName());
-        imeiListHis.setOperation(operation);
         imeiListHis.setGsmaStatus(imeiList.getGsmaStatus());
         imeiListHis.setPairingDate(imeiList.getPairingDate());
         imeiListHis.setRecordTime(imeiList.getRecordTime());

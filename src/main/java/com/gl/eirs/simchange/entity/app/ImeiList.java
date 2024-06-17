@@ -52,9 +52,6 @@ public class ImeiList {
     @Column(name="pair_mode")
     String pairMode;
 
-    @Column(name="remarks")
-    String remarks;
-
     @Column(name = "actual_imei")
     String actualImei;
 }

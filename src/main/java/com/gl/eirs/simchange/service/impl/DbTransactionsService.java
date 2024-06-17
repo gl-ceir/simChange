@@ -164,7 +164,7 @@ public class DbTransactionsService implements IDbTransactions {
             // delete old record
             imeiListRepository.deleteById(Math.toIntExact(imeiList.getId()));
             // insert in history table
-            ImeiListHis imeiListHis = imeiListHisBuilder.forInsert(imeiList, 0, "delete");
+            ImeiListHis imeiListHis = imeiListHisBuilder.forInsert(imeiList, 0, "DELETE");
             imeiListHisRepository.save(imeiListHis);
 
             // insert new record in imei list
@@ -172,7 +172,7 @@ public class DbTransactionsService implements IDbTransactions {
             imeiListRepository.save(imeiList1);
 
             // insert in history table
-            imeiListHis = imeiListHisBuilder.forInsert(imeiList1, 1, "add");
+            imeiListHis = imeiListHisBuilder.forInsert(imeiList1, 1, "ADD");
             imeiListHisRepository.save(imeiListHis);
 
         } catch (Exception e) {
@@ -191,7 +191,7 @@ public class DbTransactionsService implements IDbTransactions {
             // delete old record
             duplicateDeviceDetailRepository.deleteById(Math.toIntExact(duplicateDeviceDetail.getId()));
             // insert in his table
-            DuplicateDeviceDetailHis duplicateDeviceDetailHis = duplicateDeviceDetailHisBuilder.forInsert(duplicateDeviceDetail, 0, "delete");
+            DuplicateDeviceDetailHis duplicateDeviceDetailHis = duplicateDeviceDetailHisBuilder.forInsert(duplicateDeviceDetail, 0, "DELETE");
             duplicateDeviceDetailHisRepository.save(duplicateDeviceDetailHis);
 
             // insert new record in exception list
@@ -199,7 +199,7 @@ public class DbTransactionsService implements IDbTransactions {
             duplicateDeviceDetailRepository.save(duplicateDeviceDetail1);
 
             // insert in history table
-            duplicateDeviceDetailHis = duplicateDeviceDetailHisBuilder.forInsert(duplicateDeviceDetail1, 1, "add");
+            duplicateDeviceDetailHis = duplicateDeviceDetailHisBuilder.forInsert(duplicateDeviceDetail1, 1, "ADD");
             duplicateDeviceDetailHisRepository.save(duplicateDeviceDetailHis);
 
         } catch (Exception e) {
@@ -212,28 +212,21 @@ public class DbTransactionsService implements IDbTransactions {
 
     @Override
     @Transactional
-    public boolean dbTransaction(String oldImsi, String newImsi) {
+    public boolean dbTransaction(ActiveMsisdnList activeMsisdnList, String newImsi) {
         try {
             // Check if the entry with oldImsi exists
-            ActiveMsisdnList activeMsisdnListEntry =  activeMsisdnListRepository.findByImsi(oldImsi);
+            activeMsisdnListRepository.deleteById(activeMsisdnList.getId());
 
-            if (activeMsisdnListEntry != null) {
-                // Update IMSI with the new value
-                activeMsisdnListEntry.setImsi(newImsi);
-
-                // Save the updated entry in active_msisdn_list
-                activeMsisdnListRepository.save(activeMsisdnListEntry);
+            ActiveMsisdnList activeMsisdnList1 = activeMsisdnListBuilder.forInsert(activeMsisdnList, newImsi);
+            activeMsisdnListRepository.save(activeMsisdnList1);
 
                 // Create a history entry
                 ActiveMsisdnListHis activeMsisdnListHis = activeMsisdnListHisBuilder
-                        .forInsert(activeMsisdnListEntry, oldImsi);
+                        .forInsert(activeMsisdnList, 0);
 
                 // Insert the history entry into active_msisdn_list_his
                 activeMsisdnListHisRepository.save(activeMsisdnListHis);
 
-                // Transaction successful
-                return true;
-            }
         }catch (Exception e) {
             e.printStackTrace();
             return false;

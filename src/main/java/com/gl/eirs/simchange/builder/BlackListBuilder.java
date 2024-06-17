@@ -28,6 +28,7 @@ public class BlackListBuilder {
         blackList1.setUserId(blackList.getUserId());
         blackList1.setUserType(blackList.getUserType());
         blackList1.setTac(blackList.getTac());
+        blackList1.setSource(blackList.getSource());
         return blackList1;
     }
 }

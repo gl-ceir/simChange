@@ -137,7 +137,7 @@ public class FileService implements IFileService {
         }
     }
 
-    public FailureMsg readFile(FileDto file) throws SQLException {
+    public FailureMsg readFile(FileDto file) throws SQLException, IOException {
         Connection conn = appDbConfig.appDataSource().getConnection();
         FailureMsg failureMsg;
         int greyListSuccessCount = 0;
@@ -163,14 +163,16 @@ public class FileService implements IFileService {
              BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             String record;
             boolean isFirstLine = true;
+            String fileSeparator = appConfig.getFileSeparator().replace("\\|", "|");
             while ((record = reader.readLine()) != null) {
                 if (record.isEmpty()) {
                     continue;
                 }
                 try {
                     String[] splitRecord = record.split(appConfig.getFileSeparator(), -1);
+                    logger.info("Record is {}", record);
                     if (isFirstLine) {
-                        writer.write(record + appConfig.getFileSeparator() + "status");
+                        writer.write(record + fileSeparator + "status");
                         writer.newLine();
                         isFirstLine = false;
                         continue;
@@ -185,7 +187,7 @@ public class FileService implements IFileService {
                             splitRecord[file.getOldImsiColumnNumber()] = oldImsi;
                         } else {
                             logger.error("No old IMSI found or IMSI matches the new one, skipping this record");
-                            writer.write(record + "," + "not ok\n");
+                            writer.write(record + fileSeparator + "not ok\n");
                             continue;
                         }
                     }
@@ -194,6 +196,9 @@ public class FileService implements IFileService {
 
                     List<GreyList> greyList = greyListRepository.findAllByImsi(oldImsi);
                     file.setGreyListFound(file.getGreyListFound() + greyList.size());
+                    if(greyList.size() == 0) {
+                        logger.info("No entries found in grey_list list with imsi: {}", oldImsi);
+                    }
                     if (!greyList.isEmpty()) {
                         for (GreyList list : greyList) {
                             logger.info("The IMSI matched in grey list is : {}", list.toString());
@@ -209,9 +214,11 @@ public class FileService implements IFileService {
                         }
                     }
                     file.setGreyListSuccess(greyListSuccessCount);
-
                     List<BlackList> blackList = blackListRepository.findAllByImsi(oldImsi);
                     file.setBlacklistFound(file.getBlacklistFound() + blackList.size());
+                    if(blackList.size() == 0) {
+                        logger.info("No entries found in black_list list with imsi: {}", oldImsi);
+                    }
                     if (!blackList.isEmpty()) {
                         for (BlackList list : blackList) {
                             logger.info("The IMSI matched in black list : {}", list.toString());
@@ -230,6 +237,9 @@ public class FileService implements IFileService {
 
                     List<ExceptionList> exceptionList = exceptionListRepository.findAllByImsi(oldImsi);
                     file.setExceptionListFound(file.getExceptionListFound() + exceptionList.size());
+                    if(exceptionList.size() == 0) {
+                        logger.info("No entries found in exception_list list with imsi: {}", oldImsi);
+                    }
                     if (!exceptionList.isEmpty()) {
                         for (ExceptionList list : exceptionList) {
                             logger.info("The IMSI matched in exception list : {}", exceptionList.toString());
@@ -248,6 +258,9 @@ public class FileService implements IFileService {
 
                     List<ImeiList> imeiList = imeiListRepository.findAllByImsi(oldImsi);
                     file.setImeiListFound(file.getImeiListFound() + imeiList.size());
+                    if(imeiList.size() == 0) {
+                        logger.info("No entries found in imei_pair_detail list with imsi: {}", oldImsi);
+                    }
                     if (!imeiList.isEmpty()) {
                         for (ImeiList list : imeiList) {
                             logger.info("The IMSI matched in Imei list : {}", list.toString());
@@ -266,6 +279,9 @@ public class FileService implements IFileService {
 
                     List<DuplicateDeviceDetail> duplicateDeviceDetail = duplicateDeviceDetailRepository.findAllByImsi(oldImsi);
                     file.setDuplicateDeviceDetailFound(file.getDuplicateDeviceDetailFound() + duplicateDeviceDetail.size());
+                    if(duplicateDeviceDetail.size() == 0) {
+                        logger.info("No entries found in duplicate_device_detail list with imsi: {}", oldImsi);
+                    }
                     if (!duplicateDeviceDetail.isEmpty()) {
                         for (DuplicateDeviceDetail list : duplicateDeviceDetail) {
                             logger.info("The IMSI matched in Duplicate Device Details list is : {}", list.toString());
@@ -281,7 +297,7 @@ public class FileService implements IFileService {
                         }
                     }
                     file.setDuplicateDeviceDetailSuccess(duplicateDeviceDetailSucessCount);
-                    writer.write(String.join(appConfig.getFileSeparator(), splitRecord) + appConfig.getFileSeparator() + status);
+                    writer.write(String.join(fileSeparator, splitRecord) + fileSeparator + status);
                     writer.newLine();
                     // Process Active Msisdn List using ActiveMsisdnListBuilder
                     ActiveMsisdnList activeMsisdnList = activeMsisdnListRepository.findByImsi(oldImsi);
@@ -289,14 +305,16 @@ public class FileService implements IFileService {
                     if (activeMsisdnList == null) {
                         logger.info("No entry found in ActiveMsisdnList for IMSI: {}", oldImsi);
                         continue; // Move to the next record
+                    } else {
+                        boolean transactionSuccess = dbTransactionsService.dbTransaction(activeMsisdnList, newImsi);
+                        if (!transactionSuccess) {
+                            failureMsg = FailureMsg.FailureMsgBuilder("Error processing Active Msisdn List");
+                            return failureMsg;
+                        }
                     }
 
                     // Process Active Msisdn List using the found entry and newImsi
-                    boolean transactionSuccess = dbTransactionsService.dbTransaction(oldImsi, newImsi);
-                    if (!transactionSuccess) {
-                        failureMsg = FailureMsg.FailureMsgBuilder("Error processing Active Msisdn List");
-                        return failureMsg;
-                    }
+
 
 
 

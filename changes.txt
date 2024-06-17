@@ -1,0 +1,11 @@
+1. Change alert message of alert 5410 --> from old_imsi to pair of old_imsi, new imsi and msisdn
+2. Add new alert message for alert 5412 -->  unique validation for msisdn
+3. Check the flow for prefix / null check in new imsi and old imsi values
+4. name of processed file
+insert into cfg_feature_alert (alert_id, description, feature) values ("alert5408", "Null values exists in Sim Change file <e> for operator <process_name>", "Sim_Change_Dump");
+
+
+
+insert into cfg_feature_alert (alert_id, description, feature) values ("alert5412", "The Sim Change file <e> failed for unique values for MSISDN for operator <process_name>", "Sim_Change_Dump");
+insert into cfg_feature_alert (alert_id, description, feature) values ("alert5413", "Non-Numeric exists in Sim Change file <e> for operator <process_name>", "Sim_Change_Dump");
+insert into cfg_feature_alert (alert_id, description, feature) values ("alert5414", "The Sim Change file <e> failed for uniqueness of records for operator <process_name>", "Sim_Change_Dump");

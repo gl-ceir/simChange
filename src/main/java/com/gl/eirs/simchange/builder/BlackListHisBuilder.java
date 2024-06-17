@@ -30,6 +30,7 @@ public class BlackListHisBuilder {
         blackListHis.setUserId(blackList.getUserId());
         blackListHis.setUserType(blackList.getUserType());
         blackListHis.setTac(blackList.getTac());
+        blackListHis.setSource(blackList.getSource());
         return blackListHis;
     }
 }

@@ -24,7 +24,7 @@ public class ExceptionListHis {
     @Column(name="imei")
     String imei;
 
-    @Column(name="complain_type")
+    @Column(name="complaint_type")
     String complainType;
 
     @Column(name="expiry_date")
@@ -33,7 +33,8 @@ public class ExceptionListHis {
     @Column(name="mode_type")
     String modeType;
 
-
+    @Column(name="source")
+    String source;
     @Column(name="request_type")
     String requestType;
 

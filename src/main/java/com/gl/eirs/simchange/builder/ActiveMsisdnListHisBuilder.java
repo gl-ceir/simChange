@@ -10,16 +10,14 @@ import static com.gl.eirs.simchange.constants.Constants.remarks;
 @Builder
 public class ActiveMsisdnListHisBuilder {
 
-    public ActiveMsisdnListHis forInsert(ActiveMsisdnList activeMsisdnList, String oldImsi) {
+    public ActiveMsisdnListHis forInsert(ActiveMsisdnList activeMsisdnList, int operation) {
         ActiveMsisdnListHis activeMsisdnListHis = new ActiveMsisdnListHis();
-        activeMsisdnListHis.setImsi(oldImsi);
+        activeMsisdnListHis.setImsi(activeMsisdnList.getImsi());
         activeMsisdnListHis.setMsisdn(activeMsisdnList.getMsisdn());
-        activeMsisdnListHis.setCreatedOn(activeMsisdnList.getCreatedOn());
-        activeMsisdnListHis.setModifiedOn(activeMsisdnList.getModifiedOn());
         activeMsisdnListHis.setRemarks(remarks);
         activeMsisdnListHis.setOperator(activeMsisdnList.getOperator());
-        activeMsisdnListHis.setOperation(activeMsisdnListHis.getOperation());
-        activeMsisdnListHis.setDeactivationDate(activeMsisdnList.getActivationDate());
+        activeMsisdnListHis.setOperation(operation);
+        activeMsisdnListHis.setActivationDate(activeMsisdnList.getActivationDate());
         return activeMsisdnListHis;
     }
 }

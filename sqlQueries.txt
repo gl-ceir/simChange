@@ -6,7 +6,7 @@ insert into cfg_feature_alert (alert_id, description, feature) values ("alert540
 insert into cfg_feature_alert (alert_id, description, feature) values ("alert5405", "The Sim Change file <e> failed for new IMSI prefix validation for the operator <process_name>", "Sim_Change_Dump");
 insert into cfg_feature_alert (alert_id, description, feature) values ("alert5406", "The Sim Change file <e> failed for old IMSI prefix validation for the operator <process_name>", "Sim_Change_Dump");
 insert into cfg_feature_alert (alert_id, description, feature) values ("alert5407", "The Sim Change file <e> failed for msisdn prefix validation for the operator <process_name>", "Sim_Change_Dump");
-insert into cfg_feature_alert (alert_id, description, feature) values ("alert5408", "Null/Non-Numeric values exists in Sim Change file <e> for operator <process_name>", "Sim_Change_Dump");
+insert into cfg_feature_alert (alert_id, description, feature) values ("alert5408", "Null values exists in Sim Change file <e> for operator <process_name>", "Sim_Change_Dump");
 insert into cfg_feature_alert (alert_id, description, feature) values ("alert5409", "The Sim Change file <e> failed for uniqueness for new IMSI values for the operator <process_name>", "Sim_Change_Dump");
 insert into cfg_feature_alert (alert_id, description, feature) values ("alert5410", "The Sim Change file <e> failed for uniqueness for old IMSI values for the operator <process_name>", "Sim_Change_Dump");
 insert into cfg_feature_alert (alert_id, description, feature) values ("alert5411", "The process failed for Sim Change with an exception <e> for operator <process_name>", "Sim_Change_Dump");

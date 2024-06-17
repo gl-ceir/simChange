@@ -18,30 +18,30 @@ public class ActiveMsisdnListHis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "created_on", nullable = false)
+    @Column(name = "created_on")
     private Timestamp createdOn;
 
-    @Column(name = "modified_on", nullable = false)
+    @Column(name = "modified_on")
     private Timestamp modifiedOn;
 
-    @Column(name = "msisdn", length = 15, nullable = false)
+    @Column(name = "msisdn")
     private String msisdn;
 
-    @Column(name = "imsi", length = 15, nullable = false)
+    @Column(name = "imsi")
     private String imsi;
 
-    @Column(name = "remarks", length = 50)
+    @Column(name = "remarks")
     private String remarks;
 
     @Column(name = "operation")
     private int operation;
 
-    @Column(name = "operator", length = 50)
-    private String operator= "SM";
+    @Column(name = "operator")
+    private String operator;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "deactivation_date")
-    private Date deactivationDate = new Date(); // Initialize with current date
+
+    @Column(name = "activation_date")
+    private String activationDate; // Initialize with current date
 
 
 

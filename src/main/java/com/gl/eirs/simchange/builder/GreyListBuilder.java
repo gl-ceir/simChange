@@ -28,6 +28,7 @@ public class GreyListBuilder {
         greyList1.setUserId(greyList.getUserId());
         greyList1.setUserType(greyList.getUserType());
         greyList1.setTac(greyList.getTac());
+        greyList1.setSource(greyList.getSource());
         return greyList1;
     }
 

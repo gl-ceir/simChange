@@ -29,6 +29,7 @@ public class GreyListHisBuilder {
         greyListHis.setUserId(greyList.getUserId());
         greyListHis.setUserType(greyList.getUserType());
         greyListHis.setTac(greyList.getTac());
+        greyListHis.setSource(greyList.getSource());
         return greyListHis;
     }
 }

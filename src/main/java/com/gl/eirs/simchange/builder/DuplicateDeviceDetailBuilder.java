@@ -21,7 +21,7 @@ public class DuplicateDeviceDetailBuilder {
         duplicateDeviceDetail1.setFileName(duplicateDeviceDetail.getFileName());
         duplicateDeviceDetail1.setEdrTime(duplicateDeviceDetail.getEdrTime());
         duplicateDeviceDetail1.setStatus(duplicateDeviceDetail.getStatus());
-        duplicateDeviceDetail1.setRemarks(remarks);
+        duplicateDeviceDetail1.setRemarks(duplicateDeviceDetail.getRemarks());
         duplicateDeviceDetail1.setOperator(duplicateDeviceDetail.getOperator());
         duplicateDeviceDetail1.setExpiryDate(duplicateDeviceDetail.getExpiryDate());
         duplicateDeviceDetail1.setUpdateBy(duplicateDeviceDetail.getUpdateBy());

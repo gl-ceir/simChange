@@ -30,6 +30,7 @@ public class ExceptionListHisBuilder {
         exceptionListHis.setUserId(exceptionList.getUserId());
         exceptionListHis.setUserType(exceptionList.getUserType());
         exceptionListHis.setTac(exceptionList.getTac());
+        exceptionListHis.setSource(exceptionList.getSource());
         return exceptionListHis;
     }
 }

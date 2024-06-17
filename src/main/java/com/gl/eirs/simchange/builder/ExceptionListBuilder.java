@@ -28,6 +28,7 @@ public class ExceptionListBuilder {
         exceptionList1.setUserId(exceptionList.getUserId());
         exceptionList1.setUserType(exceptionList.getUserType());
         exceptionList1.setTac(exceptionList.getTac());
+        exceptionList1.setSource(exceptionList.getSource());
         return exceptionList1;
     }
 

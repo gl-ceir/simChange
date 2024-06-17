@@ -52,8 +52,8 @@ public class ImeiListHis {
     @Column(name="pair_mode")
     String pairMode;
 
-    @Column(name="operation")
-    int operation;
+//    @Column(name="operation")
+//    int operation;
 
     @Column(name = "action")
     String action;

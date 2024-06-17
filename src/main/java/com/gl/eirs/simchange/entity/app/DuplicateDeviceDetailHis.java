@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name= "duplicate_device_detail_His")
+@Table(name= "duplicate_device_detail_his")
 public class DuplicateDeviceDetailHis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,8 @@ public class DuplicateDeviceDetailHis {
     @Column(name="edr_time")
     String edrTime;
 
+    @Column(name="remarks")
+    String remarks;
 
 
     @Column(name="operator")
@@ -86,8 +88,8 @@ public class DuplicateDeviceDetailHis {
     @Column(name = "fail_count")
     String failCount;
 
-    @Column(name = "operation")
-    int operation;
+//    @Column(name = "operation")
+//    int operation;
 
     @Column(name = "action")
     String action;

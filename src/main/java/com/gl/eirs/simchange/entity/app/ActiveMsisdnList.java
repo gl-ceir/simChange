@@ -17,27 +17,27 @@ public class ActiveMsisdnList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "imsi", nullable = false)
+    @Column(name = "imsi")
      String imsi;
 
-    @Column(name = "msisdn", nullable = false)
+    @Column(name = "msisdn")
      String msisdn;
 
-    @Column(name = "created_on", nullable = false)
+    @Column(name = "created_on")
      Timestamp createdOn;
 
-    @Column(name = "modified_on", nullable = false)
+    @Column(name = "modified_on")
      Timestamp modifiedOn;
 
-    @Column(name = "remarks", length = 50)
+    @Column(name = "remarks")
      String remarks;
 
 
-    @Column(name = "operator", length = 50)
-     String operator= "SM";
+    @Column(name = "operator")
+     String operator;
 
-    @Temporal(TemporalType.TIMESTAMP)
+
     @Column(name = "activation_date")
-     Date activationDate = new Date();
+     String activationDate;
 
 }

@@ -37,9 +37,9 @@ public class DuplicateDeviceDetailHisBuilder {
         duplicateDeviceDetailHis.setSuccessCount(duplicateDeviceDetail.getSuccessCount());
         duplicateDeviceDetailHis.setFailCount(duplicateDeviceDetail.getFailCount());
         duplicateDeviceDetailHis.setActualImei(duplicateDeviceDetail.getActualImei());
+        duplicateDeviceDetailHis.setRemarks(duplicateDeviceDetail.getRemarks());
         duplicateDeviceDetailHis.setAction(action);
         duplicateDeviceDetailHis.setActionRemark(remarks);
-        duplicateDeviceDetailHis.setOperation(operation);
         return duplicateDeviceDetailHis;
     }
 }

@@ -11,15 +11,12 @@ import static com.gl.eirs.simchange.constants.Constants.remarks;
 public class ActiveMsisdnListBuilder {
 
     public ActiveMsisdnList forInsert(ActiveMsisdnList activeMsisdnList, String newImsi) {
-ActiveMsisdnList activeMsisdnList1 = new ActiveMsisdnList();
-activeMsisdnList1.setImsi(newImsi);
-activeMsisdnList1.setMsisdn(activeMsisdnList.getMsisdn());
-activeMsisdnList1.setCreatedOn(activeMsisdnList.getCreatedOn());
-activeMsisdnList1.setModifiedOn(activeMsisdnList.getModifiedOn());
-activeMsisdnList1.setRemarks(remarks);
-activeMsisdnList1.setOperator(activeMsisdnList.getOperator());
-activeMsisdnList1.setActivationDate(activeMsisdnList.getActivationDate());
-return activeMsisdnList1;
+        ActiveMsisdnList activeMsisdnList1 = new ActiveMsisdnList();
+        activeMsisdnList1.setImsi(newImsi);
+        activeMsisdnList1.setMsisdn(activeMsisdnList.getMsisdn());
+        activeMsisdnList1.setRemarks(remarks);
+        activeMsisdnList1.setOperator(activeMsisdnList.getOperator());
 
+        return activeMsisdnList1;
     }
 }
